@@ -44,6 +44,7 @@ class StartViewModel : ViewModel() {
         listOf("Интеграл", "Производная"),
         listOf("Первокурсник", "Демидович"),
         listOf("Пифагор", "Евклид"),
+        listOf("Орёл", "Прометей")
     )
 
 

@@ -1,7 +1,6 @@
 package com.example.inrow.start
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.inrow.R
 import com.example.inrow.databinding.FragmentStartBinding
-import kotlin.random.Random
 
 
 class StartFragment : Fragment() {
