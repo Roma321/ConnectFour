@@ -1,11 +1,13 @@
 package com.example.inrow.start
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,36 +21,7 @@ class StartFragment : Fragment() {
 
     private lateinit var viewModel: StartViewModel
     private lateinit var binding: FragmentStartBinding
-    private var width = 5
-    private var height = 5
 
-    private val players = listOf(
-        listOf("Крош", "Ёжик"),
-        listOf("Биба", "Боба"),
-        listOf("Онегин", "Ленский"),
-        listOf("Пупа", "Лупа"),
-        listOf("Бонни", "Клайд"),
-        listOf("Чип", "Дейл"),
-        listOf("Кетчуп", "Майонез"),
-        listOf("Сталин", "Ленин"),
-        listOf("Чук", "Гек"),
-        listOf("Вупсень", "Пупсень"),
-        listOf("Маркс", "Энгельс"),
-        listOf("Том", "Джерри"),
-        listOf("Тимон", "Пумба"),
-        listOf("Акуна", "Матата"),
-        listOf("Лило", "Стич"),
-        listOf("Шрек", "Осёл"),
-        listOf("Астерикс", "Обеликс"),
-        listOf("Майк", "Салли"),
-        listOf("Малыш", "Карлсон"),
-        listOf("Инь", "Янь"),
-        listOf("Салтыков", "Щедрин"),
-        listOf("Римский", "Корсаков"),
-        listOf("Интеграл", "Производная"),
-        listOf("Первокурсник", "Демидович"),
-        listOf("Пифагор", "Евклид"),
-    )
 
 
     override fun onCreateView(
@@ -85,7 +58,7 @@ class StartFragment : Fragment() {
         binding.widthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                setSizes(newWidth = width + pos)
+                viewModel.setSizes(newWidth = viewModel.width.value!! + pos)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -97,7 +70,7 @@ class StartFragment : Fragment() {
         binding.heightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                setSizes(newHeight = height + pos)
+                viewModel.setSizes(newHeight = viewModel.height.value!! + pos)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -106,44 +79,66 @@ class StartFragment : Fragment() {
         }
 
         binding.setSmallFieldButton.setOnClickListener {
-            setSizes(7, 6)
+            viewModel.setSizes(7, 6)
         }
 
         binding.setMediumFieldButton.setOnClickListener {
-            setSizes(8, 8)
+            viewModel.setSizes(8, 8)
         }
 
         binding.setBigFieldButton.setOnClickListener {
-            setSizes(10, 10)
+            viewModel.setSizes(10, 10)
         }
 
-        setRandomPlayerNames()
+        binding.editTextNamePlayer1.doAfterTextChanged {
+            viewModel.updatePlayer1(it.toString())
+        }
+
+        binding.editTextNamePlayer2.doAfterTextChanged {
+            viewModel.updatePlayer2(it.toString())
+        }
+
+
+        viewModel.height.observe(viewLifecycleOwner) {
+            setSizeLabelText()
+        }
+
+        viewModel.width.observe(viewLifecycleOwner) {
+            setSizeLabelText()
+        }
+
+        viewModel.playerNames.observe(viewLifecycleOwner) {
+            setPlayersNames()
+        }
 
         binding.reloadImageView.setOnClickListener {
-            setRandomPlayerNames()
+            viewModel.setRandomPlayerNames()
         }
 
+        setPlayersNames()
+        setSizeLabelText()
         return binding.root
 
     }
 
-    private fun setRandomPlayerNames() {
-        val a = players.random().shuffled()
-        binding.editTextNamePlayer1.setText(a[0])
-        binding.editTextNamePlayer2.setText(a[1])
+
+
+    private fun setPlayersNames() {
+        binding.editTextNamePlayer1.setText(viewModel.playerNames.value!![0])
+        binding.editTextNamePlayer2.setText(viewModel.playerNames.value!![1])
     }
 
     private fun goToGame(it: View) {
         Navigation.findNavController(it).navigate(
             StartFragmentDirections.actionStartFragmentToGameFragment(
-                width = width,
-                height = height
+                width = viewModel.width.value!!,
+                height = viewModel.height.value!!
             )
         )
     }
 
     fun setCustomSizeOnClickListener(view: View) {
-        setSizes(5, 5)
+        viewModel.setSizes(5, 5)
         binding.linearLayoutStandardSizeButtons.visibility = View.GONE
         binding.linearLayoutSetCustomSizeElements.visibility = View.VISIBLE
         binding.setCustomSizeButton.text = "Выбрать стандартный размер"
@@ -157,14 +152,12 @@ class StartFragment : Fragment() {
         binding.setCustomSizeButton.setOnClickListener(::setCustomSizeOnClickListener)
     }
 
-    private fun setSizes(newWidth: Int = width, newHeight: Int = height) {
-        width = newWidth
-        height = newHeight
-        binding.tvFieldSize.text = "Укажите размер поля. Выбрано: ${width}x${height}"
+
+
+    private fun setSizeLabelText() {
+        binding.tvFieldSize.text = "Укажите размер поля. Выбрано: ${viewModel.width.value}x${viewModel.height.value}"
     }
 
-    private fun List<List<String>>.random(): List<String> {
-        return this[Random.nextInt(0, this.size)]
-    }
+
 
 }
