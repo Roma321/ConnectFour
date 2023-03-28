@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".start.StartFragment">
+
+
+        <LinearLayout
+            android:id="@+id/container_of_size_selectors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/tv_field_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Укажите размер поля. Выбрано: 5х5" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_standard_size_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/set_small_field_button"
+                    style="@style/button_select_size_style"
+                    android:text="Маленький (7*6)" />
+
+                <Button
+                    android:id="@+id/set_medium_field_button"
+                    style="@style/button_select_size_style"
+                    android:text="Средний (8*8)" />
+
+                <Button
+                    android:id="@+id/set_big_field_button"
+                    style="@style/button_select_size_style"
+                    android:text="Большой (10*10)" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/set_custom_size_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Настроить свой размер" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_set_custom_size_elements"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/set_custom_size_button">
+
+                <TextView
+                    android:id="@+id/textViewWidth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Ширина:" />
+
+                <Spinner
+                    android:id="@+id/width_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp" />
+
+                <TextView
+                    android:id="@+id/textViewHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Высота:" />
+
+                <Spinner
+                    android:id="@+id/height_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Настройте игроков"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_of_size_selectors" />
+
+        <TextView
+            android:id="@+id/player_1_label"
+            android:text="Игрок 1:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3"
+            style="@style/player_label_settings" />
+        <TextView
+            android:id="@+id/player_2_label"
+            style="@style/player_label_settings"
+            android:text="Игрок 2:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/player_1_label" />
+
+        <EditText
+            app:layout_constraintStart_toEndOf="@id/player_1_label"
+            app:layout_constraintTop_toTopOf="@id/player_1_label"
+            app:layout_constraintBottom_toBottomOf="@id/player_1_label"
+            android:id="@+id/edit_text_name_player_1"
+            android:layout_width="wrap_content"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <EditText
+            app:layout_constraintStart_toEndOf="@id/player_2_label"
+            app:layout_constraintTop_toTopOf="@id/player_2_label"
+            app:layout_constraintBottom_toBottomOf="@id/player_2_label"
+            android:id="@+id/edit_text_name_player_2"
+            android:layout_width="wrap_content"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+           />
+
+        <ImageView
+            android:id="@+id/reload_image_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_name_player_1"
+            app:layout_constraintTop_toTopOf="@+id/edit_text_name_player_1"
+            app:srcCompat="@drawable/reload_ic" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Обновить"
+            app:layout_constraintEnd_toEndOf="@+id/reload_image_view"
+            app:layout_constraintStart_toStartOf="@+id/reload_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/reload_image_view" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
