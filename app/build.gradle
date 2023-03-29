@@ -37,6 +37,9 @@ android {
 }
 
 dependencies {
+    //color picker
+    implementation 'io.github.vadiole:colorpicker:1.0.2'
+
     // Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.0-alpha01'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.0-alpha01'

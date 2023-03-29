@@ -1,5 +1,6 @@
 package com.example.inrow.start
 
+import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,10 +16,13 @@ class StartViewModel : ViewModel() {
     private var _playerNames = MutableLiveData(mutableListOf("a", "b"))
     val playerNames: LiveData<MutableList<String>>
         get() = _playerNames
+    private var _color1 = MutableLiveData(Color.BLACK)
+    val color1: LiveData<Int>
+        get() = _color1
+    private var _color2 = MutableLiveData(Color.rgb(12 * 16, 0, 2 * 16))
+    val color2: LiveData<Int>
+        get() = _color2
 
-    //    private var _settingsDone = MutableLiveData(false)
-//    val settingsDone: LiveData<Boolean>
-//        get() = _settingsDone
     private val players = listOf(
         listOf("Крош", "Ёжик"),
         listOf("Биба", "Боба"),
@@ -65,11 +69,19 @@ class StartViewModel : ViewModel() {
         return this[Random.nextInt(0, this.size)]
     }
 
-    fun updatePlayer1(string: String) {
+    fun updatePlayer1Name(string: String) {
         _playerNames.value?.set(0, string)
     }
 
-    fun updatePlayer2(string: String) {
+    fun updatePlayer2Name(string: String) {
         _playerNames.value?.set(1, string)
+    }
+
+    fun updatePlayer1Color(color: Int) {
+        _color1.value = color
+    }
+
+    fun updatePlayer2Color(color: Int) {
+        _color2.value = color
     }
 }

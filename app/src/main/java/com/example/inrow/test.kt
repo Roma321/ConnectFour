@@ -1,10 +1,9 @@
 package com.example.inrow
 
-import Game
-import kotlin.random.Random
+import com.example.inrow.game.GameViewModel
 
 fun main() {
-    val game = Game()
+    val game = GameViewModel()
     game.print()
 //    game.onCellClicked(4, 0)
 //    game.onCellClicked(4, 1)

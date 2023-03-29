@@ -107,20 +107,19 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Настройте игроков"
+            style="@style/title_start_fragment_section"
+            android:text="Настройте имена игроков"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_of_size_selectors" />
 
         <TextView
             android:id="@+id/player_1_label"
+            style="@style/player_label_settings"
             android:text="Игрок 1:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView3"
-            style="@style/player_label_settings" />
+            app:layout_constraintTop_toBottomOf="@id/textView3" />
+
         <TextView
             android:id="@+id/player_2_label"
             style="@style/player_label_settings"
@@ -129,27 +128,26 @@
             app:layout_constraintTop_toBottomOf="@id/player_1_label" />
 
         <EditText
-            app:layout_constraintStart_toEndOf="@id/player_1_label"
-            app:layout_constraintTop_toTopOf="@id/player_1_label"
-            app:layout_constraintBottom_toBottomOf="@id/player_1_label"
             android:id="@+id/edit_text_name_player_1"
             android:layout_width="wrap_content"
-            android:textSize="15sp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" />
-
-        <EditText
-            app:layout_constraintStart_toEndOf="@id/player_2_label"
-            app:layout_constraintTop_toTopOf="@id/player_2_label"
-            app:layout_constraintBottom_toBottomOf="@id/player_2_label"
-            android:id="@+id/edit_text_name_player_2"
-            android:layout_width="wrap_content"
-            android:textSize="15sp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-           />
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/player_1_label"
+            app:layout_constraintStart_toEndOf="@id/player_1_label"
+            app:layout_constraintTop_toTopOf="@id/player_1_label" />
+
+        <EditText
+            android:id="@+id/edit_text_name_player_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/player_2_label"
+            app:layout_constraintStart_toEndOf="@id/player_2_label"
+            app:layout_constraintTop_toTopOf="@id/player_2_label" />
 
         <ImageView
             android:id="@+id/reload_image_view"
@@ -168,6 +166,45 @@
             app:layout_constraintEnd_toEndOf="@+id/reload_image_view"
             app:layout_constraintStart_toStartOf="@+id/reload_image_view"
             app:layout_constraintTop_toBottomOf="@+id/reload_image_view" />
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/title_start_fragment_section"
+            android:text="Выберите цвет"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_name_player_2" />
+
+
+        <TextView
+            android:id="@+id/player_1_label_2"
+            style="@style/player_label_settings"
+            android:text="Игрок 1:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView7" />
+
+        <TextView
+            android:id="@+id/player_2_label_2"
+            style="@style/player_label_settings"
+            android:text="Игрок 2:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/player_1_label_2" />
+
+        <TextView
+            android:id="@+id/first_player_color"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/player_1_label_2"
+            app:layout_constraintTop_toTopOf="@+id/player_1_label_2" />
+
+        <TextView
+            android:id="@+id/second_player_color"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@color/design_default_color_error"
+            app:layout_constraintEnd_toEndOf="@+id/first_player_color"
+            app:layout_constraintTop_toBottomOf="@+id/first_player_color" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

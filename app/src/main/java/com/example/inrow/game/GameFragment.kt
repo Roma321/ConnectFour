@@ -1,7 +1,7 @@
 package com.example.inrow.game
 
+import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,39 +16,52 @@ import com.example.inrow.databinding.FragmentGameBinding
 class GameFragment : Fragment() {
 
     private lateinit var viewModel: GameViewModel
+    private lateinit var viewModelFactory: GameViewModelFactory
     private lateinit var binding: FragmentGameBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
 
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_game, container, false
         )
 
-        generateFields()
-        return binding.root
-    }
-
-    private fun generateFields() { // TODO
         val args = GameFragmentArgs.fromBundle(requireArguments())
+        viewModelFactory = GameViewModelFactory(args.height, args.width, true)
+        viewModel = ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
+
+
+        val width = getScreenWidth() / args.width
+        val height =
+            if (getScreenHeight() * 2 / 3 < args.height * width) getScreenHeight() * 2 / 3 / args.height else width
+
         binding.apply {
             field.columnCount = args.width
             field.rowCount = args.height
             for (i in 0 until args.width * args.height) {
-                Log.e("","${args.height} ${args.width}")
                 val button = Button(context)
-                button.id = View.generateViewId()
-                button.layoutParams = ViewGroup.LayoutParams(100, 100)
-//                button.setTextAppearance(R.style.button_style)
-                button.setBackgroundResource(R.drawable.simple_rectangle)
+                button.layoutParams = ViewGroup.LayoutParams(width, height)
+                button.setBackgroundResource(R.drawable.empty_square)
                 button.text = "$i"
+                button.setOnClickListener {
+                    viewModel.onCellClicked(i % args.width, args.height - 1 - i / args.width)
+                }
                 field.addView(button)
             }
         }
+
+        return binding.root
     }
 
+
+    private fun getScreenWidth(): Int {
+        return Resources.getSystem().displayMetrics.widthPixels
+    }
+
+    private fun getScreenHeight(): Int {
+        return Resources.getSystem().displayMetrics.heightPixels
+    }
 
 }

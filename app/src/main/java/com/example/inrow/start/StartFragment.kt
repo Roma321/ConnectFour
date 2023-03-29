@@ -1,6 +1,8 @@
 package com.example.inrow.start
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.inrow.R
 import com.example.inrow.databinding.FragmentStartBinding
+import vadiole.colorpicker.ColorModel
+import vadiole.colorpicker.ColorPickerDialog
 
 
 class StartFragment : Fragment() {
@@ -21,11 +25,12 @@ class StartFragment : Fragment() {
     private lateinit var binding: FragmentStartBinding
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
         viewModel = ViewModelProvider(this)[StartViewModel::class.java]
         binding = DataBindingUtil.inflate(
             inflater,
@@ -56,7 +61,7 @@ class StartFragment : Fragment() {
         binding.widthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                viewModel.setSizes(newWidth = viewModel.width.value!! + pos)
+                viewModel.setSizes(newWidth = 5 + pos)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -68,7 +73,7 @@ class StartFragment : Fragment() {
         binding.heightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                viewModel.setSizes(newHeight = viewModel.height.value!! + pos)
+                viewModel.setSizes(newHeight = 5 + pos)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -89,11 +94,11 @@ class StartFragment : Fragment() {
         }
 
         binding.editTextNamePlayer1.doAfterTextChanged {
-            viewModel.updatePlayer1(it.toString())
+            viewModel.updatePlayer1Name(it.toString())
         }
 
         binding.editTextNamePlayer2.doAfterTextChanged {
-            viewModel.updatePlayer2(it.toString())
+            viewModel.updatePlayer2Name(it.toString())
         }
 
 
@@ -109,8 +114,47 @@ class StartFragment : Fragment() {
             setPlayersNames()
         }
 
+        viewModel.color1.observe(viewLifecycleOwner){
+            binding.firstPlayerColor.setBackgroundColor(it)
+            Log.e("1",it.toString())
+        }
+        viewModel.color2.observe(viewLifecycleOwner){
+            binding.secondPlayerColor.setBackgroundColor(it)
+            Log.e("2",it.toString())
+        }
+
         binding.reloadImageView.setOnClickListener {
             viewModel.setRandomPlayerNames()
+        }
+
+        binding.firstPlayerColor.setOnClickListener {
+            //  create dialog
+            val colorPicker: ColorPickerDialog = ColorPickerDialog.Builder()
+                .setInitialColor(viewModel.color1.value!!)
+                .setColorModel(ColorModel.RGB)
+                .setColorModelSwitchEnabled(false)
+                .setButtonOkText(android.R.string.ok)
+                .setButtonCancelText(android.R.string.cancel)
+                .onColorSelected { color: Int ->
+                    viewModel.updatePlayer1Color(color)
+                }
+                .create()
+            colorPicker.show(childFragmentManager, "color_picker")
+        }
+
+        binding.secondPlayerColor.setOnClickListener {
+            //  create dialog
+            val colorPicker: ColorPickerDialog = ColorPickerDialog.Builder()
+                .setInitialColor(viewModel.color2.value!!)
+                .setColorModel(ColorModel.RGB)
+                .setColorModelSwitchEnabled(false)
+                .setButtonOkText(android.R.string.ok)
+                .setButtonCancelText(android.R.string.cancel)
+                .onColorSelected { color: Int ->
+                    viewModel.updatePlayer2Color(color)
+                }
+                .create()
+            colorPicker.show(childFragmentManager, "color_picker")
         }
 
         setPlayersNames()
@@ -118,7 +162,6 @@ class StartFragment : Fragment() {
         return binding.root
 
     }
-
 
 
     private fun setPlayersNames() {
@@ -151,11 +194,10 @@ class StartFragment : Fragment() {
     }
 
 
-
     private fun setSizeLabelText() {
-        binding.tvFieldSize.text = "Укажите размер поля. Выбрано: ${viewModel.width.value}x${viewModel.height.value}"
+        binding.tvFieldSize.text =
+            "Укажите размер поля. Выбрано: ${viewModel.width.value}x${viewModel.height.value}"
     }
-
 
 
 }

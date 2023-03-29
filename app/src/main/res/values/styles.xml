@@ -10,10 +10,16 @@
 
     <style name="player_label_settings">
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">8dp</item>
+    </style>
+
+    <style name="title_start_fragment_section">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
     </style>
 
 </resources>
