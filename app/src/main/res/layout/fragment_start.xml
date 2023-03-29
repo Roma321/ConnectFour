@@ -206,6 +206,26 @@
             app:layout_constraintEnd_toEndOf="@+id/first_player_color"
             app:layout_constraintTop_toBottomOf="@+id/first_player_color" />
 
+        <CheckBox
+            android:id="@+id/check_box_use_random_bot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="Играть против бота Рандомыча"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/second_player_color" />
+
+        <CheckBox
+            android:id="@+id/check_box_use_defence_bot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Играть против бота Защитыча"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/check_box_use_random_bot" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

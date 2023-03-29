@@ -16,12 +16,15 @@ class StartViewModel : ViewModel() {
     private var _playerNames = MutableLiveData(mutableListOf("a", "b"))
     val playerNames: LiveData<MutableList<String>>
         get() = _playerNames
-    private var _color1 = MutableLiveData(Color.BLACK)
+    private var _color1 = MutableLiveData(Color.rgb(187, 255, 144))
     val color1: LiveData<Int>
         get() = _color1
-    private var _color2 = MutableLiveData(Color.rgb(12 * 16, 0, 2 * 16))
+    private var _color2 = MutableLiveData(Color.rgb(134, 120, 255))
     val color2: LiveData<Int>
         get() = _color2
+    private var _useBot = MutableLiveData(false)
+    val useBot: LiveData<Boolean>
+        get() = _useBot
 
     private val players = listOf(
         listOf("Крош", "Ёжик"),
@@ -48,9 +51,16 @@ class StartViewModel : ViewModel() {
         listOf("Интеграл", "Производная"),
         listOf("Первокурсник", "Демидович"),
         listOf("Пифагор", "Евклид"),
-        listOf("Орёл", "Прометей")
+        listOf("Орёл", "Прометей"),
+        listOf("Ахилл", "Гектор"),
+        listOf("Дарвин", "Бог"),
+        listOf("Мистер Икс", "Мистер Игрек"),
+        listOf("Грека", "Рак"),
+        listOf("Илья Муромец", "Алеша Попович"),
+        listOf("Иванушка-дурачок", "Иван-дурак"),
+        listOf("Гарри Поттер", "Лорд Волан-де-Морт"),
+        listOf("Гарри Поттер", "Порри Гаттер"),
     )
-
 
     init {
         setRandomPlayerNames()

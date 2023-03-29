@@ -21,6 +21,8 @@ import vadiole.colorpicker.ColorPickerDialog
 
 class StartFragment : Fragment() {
 
+    private val spinnerFill = (5..17).toList()
+
     private lateinit var viewModel: StartViewModel
     private lateinit var binding: FragmentStartBinding
 
@@ -44,16 +46,17 @@ class StartFragment : Fragment() {
             goToGame(it)
         }
 
+
         val widthArrayAdapter: ArrayAdapter<Int> = ArrayAdapter<Int>(
             activity!!.applicationContext,
             android.R.layout.simple_spinner_dropdown_item,
-            (5..12).toList()
+            spinnerFill
         )
 
         val heightArrayAdapter: ArrayAdapter<Int> = ArrayAdapter<Int>(
             activity!!.applicationContext,
             android.R.layout.simple_spinner_dropdown_item,
-            (5..12).toList()
+            spinnerFill
         )
 
         binding.setCustomSizeButton.setOnClickListener(::setCustomSizeOnClickListener)
@@ -157,6 +160,10 @@ class StartFragment : Fragment() {
             colorPicker.show(childFragmentManager, "color_picker")
         }
 
+        viewModel.useBot.observe(viewLifecycleOwner){
+            binding.checkBoxUseBot.isChecked = it
+        }
+
         setPlayersNames()
         setSizeLabelText()
         return binding.root
@@ -173,7 +180,12 @@ class StartFragment : Fragment() {
         Navigation.findNavController(it).navigate(
             StartFragmentDirections.actionStartFragmentToGameFragment(
                 width = viewModel.width.value!!,
-                height = viewModel.height.value!!
+                height = viewModel.height.value!!,
+                player1Name = viewModel.playerNames.value!![0],
+                player2Name = viewModel.playerNames.value!![1],
+                color1 = viewModel.color1.value!!,
+                color2 = viewModel.color2.value!!,
+                useBot = viewModel.useBot.value!!
             )
         )
     }
