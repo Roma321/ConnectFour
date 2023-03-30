@@ -31,7 +31,7 @@ class GameFragment : Fragment() {
         )
 
         val args = GameFragmentArgs.fromBundle(requireArguments())
-        viewModelFactory = GameViewModelFactory(args.height, args.width, true)
+        viewModelFactory = GameViewModelFactory(args.height, args.width, args.useBot)
         viewModel = ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
 
 
@@ -46,7 +46,7 @@ class GameFragment : Fragment() {
                         .setMessage("Победил игрок $win (${if (win == 1) args.player1Name else args.player2Name})")
                         .setPositiveButton("УРА!") { dialog, _ ->
                             dialog.cancel()
-                            goBack()
+//                            goBack()
                         }
                         .setCancelable(false)
                     builder.create()
@@ -63,7 +63,7 @@ class GameFragment : Fragment() {
                         .setMessage("Никто не выиграл, никто не проиграл. В целом, нормально")
                         .setPositiveButton("ОК") { dialog, _ ->
                             dialog.cancel()
-                            goBack()
+//                            goBack()
                         }
                         .setCancelable(false)
                     builder.create()

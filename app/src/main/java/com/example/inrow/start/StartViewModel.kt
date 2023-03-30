@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.inrow.GameMode
 import kotlin.random.Random
 
 class StartViewModel : ViewModel() {
@@ -22,9 +23,9 @@ class StartViewModel : ViewModel() {
     private var _color2 = MutableLiveData(Color.rgb(134, 120, 255))
     val color2: LiveData<Int>
         get() = _color2
-    private var _useBot = MutableLiveData(false)
-    val useBot: LiveData<Boolean>
-        get() = _useBot
+    private var _mode = MutableLiveData(GameMode.TWO_PLAYERS)
+    val mode: LiveData<GameMode>
+        get() = _mode
 
     private val players = listOf(
         listOf("Крош", "Ёжик"),
@@ -33,14 +34,12 @@ class StartViewModel : ViewModel() {
         listOf("Пупа", "Лупа"),
         listOf("Бонни", "Клайд"),
         listOf("Чип", "Дейл"),
-        listOf("Кетчуп", "Майонез"),
         listOf("Сталин", "Ленин"),
         listOf("Чук", "Гек"),
         listOf("Вупсень", "Пупсень"),
         listOf("Маркс", "Энгельс"),
         listOf("Том", "Джерри"),
         listOf("Тимон", "Пумба"),
-        listOf("Акуна", "Матата"),
         listOf("Лило", "Стич"),
         listOf("Шрек", "Осёл"),
         listOf("Астерикс", "Обеликс"),
@@ -94,4 +93,17 @@ class StartViewModel : ViewModel() {
     fun updatePlayer2Color(color: Int) {
         _color2.value = color
     }
+
+    fun setTwoPlayersMode() {
+        _mode.value = GameMode.TWO_PLAYERS
+    }
+
+    fun setSmartBotMode() {
+        _mode.value = GameMode.SMART_BOT
+    }
+
+    fun setRandomBotMode() {
+        _mode.value = GameMode.RANDOM_BOT
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.example.inrow.start
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.example.inrow.GameMode
 import com.example.inrow.R
 import com.example.inrow.databinding.FragmentStartBinding
 import vadiole.colorpicker.ColorModel
@@ -117,13 +117,13 @@ class StartFragment : Fragment() {
             setPlayersNames()
         }
 
-        viewModel.color1.observe(viewLifecycleOwner){
+        viewModel.color1.observe(viewLifecycleOwner) {
             binding.firstPlayerColor.setBackgroundColor(it)
-            Log.e("1",it.toString())
+            Log.e("1", it.toString())
         }
-        viewModel.color2.observe(viewLifecycleOwner){
+        viewModel.color2.observe(viewLifecycleOwner) {
             binding.secondPlayerColor.setBackgroundColor(it)
-            Log.e("2",it.toString())
+            Log.e("2", it.toString())
         }
 
         binding.reloadImageView.setOnClickListener {
@@ -160,9 +160,22 @@ class StartFragment : Fragment() {
             colorPicker.show(childFragmentManager, "color_picker")
         }
 
-        viewModel.useBot.observe(viewLifecycleOwner){
-            binding.checkBoxUseBot.isChecked = it
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radioButtonTwoPlayers -> viewModel.setTwoPlayersMode()
+                R.id.radioButtonRandomBot -> viewModel.setRandomBotMode()
+                R.id.radioButtonSmartBot -> viewModel.setSmartBotMode()
+            }
         }
+
+        viewModel.mode.observe(viewLifecycleOwner) {
+            when(it){
+                GameMode.TWO_PLAYERS -> binding.radioGroup.check(R.id.radioButtonTwoPlayers)
+                GameMode.RANDOM_BOT -> binding.radioGroup.check(R.id.radioButtonRandomBot)
+                GameMode.SMART_BOT -> binding.radioGroup.check(R.id.radioButtonSmartBot)
+            }
+        }
+
 
         setPlayersNames()
         setSizeLabelText()
@@ -185,7 +198,8 @@ class StartFragment : Fragment() {
                 player2Name = viewModel.playerNames.value!![1],
                 color1 = viewModel.color1.value!!,
                 color2 = viewModel.color2.value!!,
-                useBot = viewModel.useBot.value!!
+                useBot = true, //TODO
+                mode = viewModel.mode.value!!
             )
         )
     }

@@ -43,5 +43,8 @@
         <argument
             android:name="useBot"
             app:argType="boolean" />
+        <argument
+            android:name="mode"
+            app:argType="com.example.inrow.GameMode" />
     </fragment>
 </navigation>
