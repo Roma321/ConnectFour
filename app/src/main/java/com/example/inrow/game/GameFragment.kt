@@ -31,7 +31,7 @@ class GameFragment : Fragment() {
         )
 
         val args = GameFragmentArgs.fromBundle(requireArguments())
-        viewModelFactory = GameViewModelFactory(args.height, args.width, args.useBot)
+        viewModelFactory = GameViewModelFactory(args.height, args.width, args.mode)
         viewModel = ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
 
 

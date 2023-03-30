@@ -4,10 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.example.inrow.game.GameViewModel
 
 fun main() {
+    val a = mutableListOf(3, 4, 5, 6, 7, 8, 9)
+    for (el in a) {
+        if (el % 2 == 0) {
+            a.remove(el)
+        }
+    }
 
-    val a = MutableLiveData(5)
-    val b = MutableLiveData(5)
-    print(a == b)
+    println(a)
 }
 //    val game = GameViewModel()
 //    game.print()
