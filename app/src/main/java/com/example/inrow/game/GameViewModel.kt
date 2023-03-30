@@ -68,8 +68,10 @@ class GameViewModel(
                         if (checkOneMoveWin(moves)) return
                         if (checkOneMoveDefence(moves)) return
                         moves = filterLosingMoves(moves)
+                        moves.shuffle()
+                        if (checkCanMakeAttackingMove(moves)) return
                         if (checkCanUse2InRow()) return
-                        val move = moves.shuffled()[0]
+                        val move = moves[0]
                         onCellClicked(move.column, move.row)
                     }
                 }
@@ -77,12 +79,38 @@ class GameViewModel(
         }
     }
 
+    private fun checkCanMakeAttackingMove(moves: MutableList<Move>): Boolean {
+        var mostDangerousMove = moves[0]
+        var maxDanger = -1
+        for (move in moves) {
+            tempField[move.row][move.column] = turn
+            val lines = getAllLinesForCell(move.column, move.row)
+            print(lines)
+            val danger =
+                lines.count { list -> list.count { it == 0 } == 1 && list.count { it == turn } == 3 }
+            println("Опасность хода (${move.row}, ${move.column}) = $danger")
+            if (danger > maxDanger) {
+                maxDanger = danger
+                mostDangerousMove = move
+            }
+            tempField[move.row][move.column] = 0
+        }
+        if (maxDanger > 0) {
+            onCellClicked(mostDangerousMove.column, mostDangerousMove.row)
+            return true
+        }
+        return false
+    }
+
     private fun filterLosingMoves(
         moves: MutableList<Move>,
     ): MutableList<Move> {
         val nonLosingMoves = mutableListOf<Move>()
         for (move in moves) {
-            if (move.row == height - 1) continue
+            if (move.row == height - 1) {
+                nonLosingMoves.add(move)
+                continue
+            }
             val enemyMove = if (turn == 1) 2 else 1
             tempField[move.row + 1][move.column] = enemyMove
             if (checkWin(move.column, move.row + 1, enemyMove)) {
@@ -106,7 +134,7 @@ class GameViewModel(
                         0 0 0 0 0 0
                         0 x x x 0 0
 
-                        with automatic win text move
+                        with win text move
 
 
                          */
@@ -211,13 +239,6 @@ class GameViewModel(
         return false
     }
 
-    fun countDanger(player: Int) {
-//        if (collectDangerousLines) {
-//            if (a.count { it == player } == 3 && a.count { it == 0 } == 1)
-//                dangerousLines.add(Move(row = row, column = column))
-//        }
-    }
-
     private fun checkDiagonalWin(column: Int, row: Int, player: Int): Boolean {
 //        println("d$turn")
 
@@ -242,6 +263,14 @@ class GameViewModel(
             return true
         }
         return false
+    }
+
+    private fun getAllLinesForCell(column: Int, row: Int): List<List<Int>> {
+        return getDecreasingDiagonalsForCell(column, row)
+            .plus(getIncreasingDiagonalsForCell(column, row))
+            .plus(getHorizontalsForCell(column, row))
+            .plus(getVerticalForCell(row, column))
+
     }
 
     private fun getDecreasingDiagonalsForCell(column: Int, row: Int): MutableList<List<Int>> {
@@ -324,22 +353,26 @@ class GameViewModel(
     ): Boolean {
 //        println("v$player")
         val a = getVerticalForCell(row, column)
-        if (a.isNotEmpty() && a.all { it == player }) {
+        if (a.isNotEmpty() && a.any { vertical -> vertical.all { it == player } }) {
             return true
         }
         return false
     }
 
-    private fun getVerticalForCell(row: Int, column: Int): List<Int> {
-        if (row >= 3) {
-            return listOf(
-                tempField[row][column],
-                tempField[row - 1][column],
-                tempField[row - 2][column],
-                tempField[row - 3][column]
-            )
+    private fun getVerticalForCell(row: Int, column: Int): MutableList<List<Int>> {
+        val res = mutableListOf<List<Int>>()
+        for (downOffset in -3..0) {
+            if (row + downOffset >= 0 && row + downOffset + 3 < height) {
+                val a = listOf(
+                    tempField[row + downOffset][column],
+                    tempField[row + downOffset + 1][column],
+                    tempField[row + downOffset + 2][column],
+                    tempField[row + downOffset + 3][column]
+                )
+                res.add(a)
+            }
         }
-        return emptyList()
+        return res
     }
 
     data class Move(val row: Int, val column: Int)
