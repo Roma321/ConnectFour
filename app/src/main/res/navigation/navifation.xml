@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.inrow.start.StartFragment"
+        android:name="com.example.inrow.configure.ConfigureGameFragment"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" >
+        tools:layout="@layout/fragment_configure" >
         <action
             android:id="@+id/action_startFragment_to_gameFragment"
             app:destination="@id/gameFragment" />

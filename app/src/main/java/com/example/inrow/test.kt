@@ -1,17 +1,10 @@
 package com.example.inrow
 
-import androidx.lifecycle.MutableLiveData
-import com.example.inrow.game.GameViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun main() {
-    val a = mutableListOf(3, 4, 5, 6, 7, 8, 9)
-    for (el in a) {
-        if (el % 2 == 0) {
-            a.remove(el)
-        }
-    }
-
-    println(a)
+    println(getCurrentDateTime())
 }
 //    val game = GameViewModel()
 //    game.print()
@@ -45,3 +38,8 @@ fun main() {
 //
 //    game.print()
 //}
+
+private fun getCurrentDateTime(): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd:HH-mm-ss")
+    return sdf.format(Date())
+}

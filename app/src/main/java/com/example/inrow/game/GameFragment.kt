@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.inrow.R
+import com.example.inrow.database.GameDatabase
 import com.example.inrow.databinding.FragmentGameBinding
 
 
@@ -32,7 +33,10 @@ class GameFragment : Fragment() {
         )
 
         val args = GameFragmentArgs.fromBundle(requireArguments())
-        viewModelFactory = GameViewModelFactory(args.height, args.width, args.mode, args.minutes, args.seconds)
+        val application = requireActivity().application
+        val dao = GameDatabase.getInstance(application).getGameDatabaseDao()
+        viewModelFactory =
+            GameViewModelFactory(args.height, args.width, args.mode, args.minutes, args.seconds, dao, application, args.player1Name, args.player2Name)
         viewModel = ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
 
 
@@ -44,7 +48,7 @@ class GameFragment : Fragment() {
                 val dialog = activity?.let {
                     val builder = AlertDialog.Builder(it)
                     builder.setTitle("Победа!")
-                        .setMessage("Победил игрок $win (${if (win == 1) args.player1Name else args.player2Name})")
+                        .setMessage("Победил игрок $win (${if (win in listOf(1,3)) args.player1Name else args.player2Name})")
                         .setPositiveButton("УРА!") { dialog, _ ->
                             dialog.cancel()
 //                            goBack()
@@ -56,8 +60,8 @@ class GameFragment : Fragment() {
             }
         }
 
-        viewModel.movesCount.observe(viewLifecycleOwner){ count ->
-            if (count == viewModel.height * viewModel.width){
+        viewModel.movesCount.observe(viewLifecycleOwner) { count ->
+            if (count == viewModel.height * viewModel.width) {
                 val dialog = activity?.let {
                     val builder = AlertDialog.Builder(it)
                     builder.setTitle("Ничья!")
@@ -101,11 +105,11 @@ class GameFragment : Fragment() {
             color2Tv.setBackgroundColor(args.color2)
         }
 
-        viewModel.timeLeftForPlayer1.observe(viewLifecycleOwner){
+        viewModel.timeLeftForPlayer1.observe(viewLifecycleOwner) {
             binding.player1TimeTv.text = DateUtils.formatElapsedTime(it)
         }
 
-        viewModel.timeLeftForPlayer2.observe(viewLifecycleOwner){
+        viewModel.timeLeftForPlayer2.observe(viewLifecycleOwner) {
             binding.player2TimeTv.text = DateUtils.formatElapsedTime(it)
         }
 
@@ -113,7 +117,7 @@ class GameFragment : Fragment() {
         return binding.root
     }
 
-    private fun goBack(){
+    private fun goBack() {
         val navController = this.findNavController()
         navController.navigateUp()
     }

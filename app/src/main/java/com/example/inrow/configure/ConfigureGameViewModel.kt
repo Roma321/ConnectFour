@@ -1,4 +1,4 @@
-package com.example.inrow.start
+package com.example.inrow.configure
 
 import android.graphics.Color
 import androidx.lifecycle.LiveData
@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.inrow.GameMode
 import kotlin.random.Random
 
-class StartViewModel : ViewModel() {
+class ConfigureGameViewModel : ViewModel() {
     private var _width = MutableLiveData(5)
     val width: LiveData<Int>
         get() = _width
