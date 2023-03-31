@@ -65,6 +65,7 @@ class ConfigureGameViewModel : ViewModel() {
         listOf("Иванушка-дурачок", "Иван-дурак"),
         listOf("Гарри Поттер", "Лорд Волан-де-Морт"),
         listOf("Гарри Поттер", "Порри Гаттер"),
+        listOf("Леди Баг", "Суперкот"),
     )
 
     init {

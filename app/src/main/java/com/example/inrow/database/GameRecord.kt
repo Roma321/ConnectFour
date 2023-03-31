@@ -20,5 +20,7 @@ data class GameRecord(
     val gameString: String,
     val width: Int,
     val height: Int,
-    val movesCount:Int,
-)
+    val movesCount: Int,
+) {
+    fun totalLength() = timeSpent1 + timeSpent2
+}
