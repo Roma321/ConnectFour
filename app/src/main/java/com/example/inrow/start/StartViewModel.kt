@@ -26,6 +26,12 @@ class StartViewModel : ViewModel() {
     private var _mode = MutableLiveData(GameMode.TWO_PLAYERS)
     val mode: LiveData<GameMode>
         get() = _mode
+    private var _minutes = MutableLiveData(3)
+    val minutes: LiveData<Int>
+        get() = _minutes
+    private var _seconds = MutableLiveData(2)
+    val seconds: LiveData<Int>
+        get() = _seconds
 
     private val players = listOf(
         listOf("Крош", "Ёжик"),
@@ -64,6 +70,7 @@ class StartViewModel : ViewModel() {
     init {
         setRandomPlayerNames()
     }
+
 
     fun setRandomPlayerNames() {
         _playerNames.value = players.random().shuffled().toMutableList()
@@ -104,6 +111,16 @@ class StartViewModel : ViewModel() {
 
     fun setRandomBotMode() {
         _mode.value = GameMode.RANDOM_BOT
+    }
+
+    fun setMinutes(minutes: Int) {
+        if (minutes != _minutes.value)
+            _minutes.value = maxOf(minutes, 1)
+    }
+
+    fun setSeconds(seconds: Int) {
+        if (seconds != _seconds.value)
+            _seconds.value = maxOf(seconds, 0)
     }
 
 }

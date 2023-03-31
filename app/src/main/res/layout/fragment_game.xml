@@ -54,6 +54,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/player_2_tv" />
 
+        <TextView
+            android:id="@+id/player1TimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/color_1_tv"
+            app:layout_constraintStart_toEndOf="@+id/color_1_tv"
+            app:layout_constraintTop_toTopOf="@+id/color_1_tv" />
+
+        <TextView
+            android:id="@+id/player2TimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/color_2_tv"
+            app:layout_constraintEnd_toStartOf="@+id/color_2_tv"
+            app:layout_constraintTop_toTopOf="@+id/color_2_tv" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

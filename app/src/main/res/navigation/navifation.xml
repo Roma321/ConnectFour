@@ -41,10 +41,13 @@
             app:destination="@id/startFragment"
             app:popUpTo="@id/startFragment" />
         <argument
-            android:name="useBot"
-            app:argType="boolean" />
-        <argument
             android:name="mode"
             app:argType="com.example.inrow.GameMode" />
+        <argument
+            android:name="minutes"
+            app:argType="integer" />
+        <argument
+            android:name="seconds"
+            app:argType="integer" />
     </fragment>
 </navigation>

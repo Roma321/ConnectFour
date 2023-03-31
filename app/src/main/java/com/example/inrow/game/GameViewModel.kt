@@ -1,5 +1,6 @@
 package com.example.inrow.game
 
+import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,17 +9,57 @@ import com.example.inrow.GameMode
 class GameViewModel(
     val height: Int = 8,
     val width: Int = 8,
-    private val mode: GameMode
+    private val mode: GameMode,
+    minutes: Int,
+    private val add: Int,
 ) : ViewModel() {
-
 
     var field: Array<Array<MutableLiveData<Int>>> =
         Array(height) { Array(width) { MutableLiveData(0) } }
 
     private val tempField = List(height) { MutableList(width) { 0 } }
+    private var timer1: CountDownTimer
+    private var _timeLeftForPlayer1 = MutableLiveData(minutes * 60L)
+    val timeLeftForPlayer1: LiveData<Long>
+        get() = _timeLeftForPlayer1
+    private var _timeLeftForPlayer2 = MutableLiveData(minutes * 60L)
+    val timeLeftForPlayer2: LiveData<Long>
+        get() = _timeLeftForPlayer2
+    private var timer2: CountDownTimer
 
     init {
         print()
+        timer1 = getTimer1(minutes * 60L)
+        timer1.start()
+
+        timer2 = getTimer2(minutes * 60L)
+
+//        timer2.start()
+    }
+
+    private fun getTimer2(seconds: Long): CountDownTimer =
+        object : CountDownTimer(seconds * 1000, 1_000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                _timeLeftForPlayer2.value = (millisUntilFinished / 1_000)
+            }
+
+            override fun onFinish() {
+                _timeLeftForPlayer2.value = 0
+                _win.value = 1
+            }
+        }
+
+    private fun getTimer1(seconds: Long) = object : CountDownTimer(seconds * 1000, 1_000) {
+
+        override fun onTick(millisUntilFinished: Long) {
+            _timeLeftForPlayer1.value = (millisUntilFinished / 1_000)
+        }
+
+        override fun onFinish() {
+            _timeLeftForPlayer1.value = 0
+            _win.value = 2
+        }
     }
 
     private var _movesCount = MutableLiveData(0)
@@ -30,9 +71,9 @@ class GameViewModel(
     private var _win = MutableLiveData(0)
     val win: LiveData<Int>
         get() = _win
-    private var dangerousLines = mutableListOf<Move>()
 
-    fun print() {
+
+    private fun print() {
         for (i in height - 1 downTo 0) {
             for (j in 0 until width) {
                 print("${field[i][j].value} ($i,$j) ")
@@ -43,12 +84,20 @@ class GameViewModel(
     }
 
     fun onCellClicked(column: Int, row: Int) {
+        if (moveIsIllegal(column, row)) return
         println("> $row $column")
-        if (column >= width || row >= height) return
-//        println('1')
-        if (field[row][column].value != 0) return
-//        println('2')
         if (row == 0 || field[row - 1][column].value != 0) {
+            if (turn == 1){
+                timer1.cancel()
+                _timeLeftForPlayer1.value = _timeLeftForPlayer1.value?.plus(add)
+                timer2 = getTimer2(timeLeftForPlayer2.value!!)
+                timer2.start()
+            } else {
+                timer2.cancel()
+                _timeLeftForPlayer2.value = _timeLeftForPlayer2.value?.plus(add)
+                timer1 = getTimer1(timeLeftForPlayer1.value!!)
+                timer1.start()
+            }
             field[row][column].value = turn
             tempField[row][column] = turn
             this.print()
@@ -65,6 +114,7 @@ class GameViewModel(
                         val move = moves.shuffled()[0]
                         onCellClicked(move.column, move.row)
                     } else {
+                        if (movesCount.value == width * height) return
                         if (checkOneMoveWin(moves)) return
                         if (checkOneMoveDefence(moves)) return
                         moves = filterLosingMoves(moves)
@@ -77,6 +127,13 @@ class GameViewModel(
                 }
             }
         }
+    }
+
+    private fun moveIsIllegal(column: Int, row: Int): Boolean {
+        if (movesCount.value == width * height || win.value != 0) return true
+        if (column >= width || row >= height) return true
+        if (field[row][column].value != 0) return true
+        return false
     }
 
     private fun checkCanMakeAttackingMove(moves: MutableList<Move>): Boolean {

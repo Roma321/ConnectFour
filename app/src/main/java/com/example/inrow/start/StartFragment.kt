@@ -1,6 +1,8 @@
 package com.example.inrow.start
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -104,6 +106,47 @@ class StartFragment : Fragment() {
             viewModel.updatePlayer2Name(it.toString())
         }
 
+        binding.editTextMinutes.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                try {
+                    viewModel.setMinutes(s!!.toString().toInt())
+                } catch (_:Exception){}
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+
+        binding.editTextSeconds.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                try {
+                    viewModel.setSeconds(s!!.toString().toInt())
+                } catch (_:Exception){}
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+
+        viewModel.seconds.observe(viewLifecycleOwner){
+            binding.editTextSeconds.setText(it.toString())
+        }
+
+        viewModel.minutes.observe(viewLifecycleOwner){
+            binding.editTextMinutes.setText(it.toString())
+        }
+
 
         viewModel.height.observe(viewLifecycleOwner) {
             setSizeLabelText()
@@ -198,8 +241,9 @@ class StartFragment : Fragment() {
                 player2Name = viewModel.playerNames.value!![1],
                 color1 = viewModel.color1.value!!,
                 color2 = viewModel.color2.value!!,
-                useBot = true, //TODO
-                mode = viewModel.mode.value!!
+                mode = viewModel.mode.value!!,
+                minutes = viewModel.minutes.value!!,
+                seconds = viewModel.seconds.value!!,
             )
         )
     }

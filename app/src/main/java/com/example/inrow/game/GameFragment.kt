@@ -3,6 +3,7 @@ package com.example.inrow.game
 import android.app.AlertDialog
 import android.content.res.Resources
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ class GameFragment : Fragment() {
         )
 
         val args = GameFragmentArgs.fromBundle(requireArguments())
-        viewModelFactory = GameViewModelFactory(args.height, args.width, args.mode)
+        viewModelFactory = GameViewModelFactory(args.height, args.width, args.mode, args.minutes, args.seconds)
         viewModel = ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
 
 
@@ -100,6 +101,13 @@ class GameFragment : Fragment() {
             color2Tv.setBackgroundColor(args.color2)
         }
 
+        viewModel.timeLeftForPlayer1.observe(viewLifecycleOwner){
+            binding.player1TimeTv.text = DateUtils.formatElapsedTime(it)
+        }
+
+        viewModel.timeLeftForPlayer2.observe(viewLifecycleOwner){
+            binding.player2TimeTv.text = DateUtils.formatElapsedTime(it)
+        }
 
 
         return binding.root

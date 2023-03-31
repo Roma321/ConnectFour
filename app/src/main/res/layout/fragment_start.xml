@@ -14,7 +14,7 @@
             android:id="@+id/container_of_size_selectors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
@@ -116,6 +116,7 @@
         <TextView
             android:id="@+id/player_1_label"
             style="@style/player_label_settings"
+            android:layout_marginTop="16dp"
             android:text="Игрок 1:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView3" />
@@ -123,6 +124,7 @@
         <TextView
             android:id="@+id/player_2_label"
             style="@style/player_label_settings"
+            android:layout_marginTop="16dp"
             android:text="Игрок 2:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/player_1_label" />
@@ -154,6 +156,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_text_name_player_2"
             app:layout_constraintStart_toEndOf="@+id/edit_text_name_player_1"
             app:layout_constraintTop_toTopOf="@+id/edit_text_name_player_1"
             app:srcCompat="@drawable/reload_ic" />
@@ -178,6 +181,7 @@
 
         <TextView
             android:id="@+id/player_1_label_2"
+            android:layout_marginTop="16dp"
             style="@style/player_label_settings"
             android:text="Игрок 1:"
             app:layout_constraintStart_toStartOf="parent"
@@ -185,16 +189,19 @@
 
         <TextView
             android:id="@+id/player_2_label_2"
+
             style="@style/player_label_settings"
             android:text="Игрок 2:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/player_1_label_2" />
+            app:layout_constraintStart_toEndOf="@+id/first_player_color"
+            app:layout_constraintTop_toTopOf="@+id/player_1_label_2" />
 
         <TextView
             android:id="@+id/first_player_color"
             android:layout_width="70dp"
             android:layout_height="30dp"
+            android:layout_marginStart="8dp"
             android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/player_1_label_2"
             app:layout_constraintStart_toEndOf="@+id/player_1_label_2"
             app:layout_constraintTop_toTopOf="@+id/player_1_label_2" />
 
@@ -202,9 +209,10 @@
             android:id="@+id/second_player_color"
             android:layout_width="70dp"
             android:layout_height="30dp"
+            android:layout_marginStart="8dp"
             android:background="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="@+id/first_player_color"
-            app:layout_constraintTop_toBottomOf="@+id/first_player_color" />
+            app:layout_constraintStart_toEndOf="@+id/player_2_label_2"
+            app:layout_constraintTop_toTopOf="@+id/first_player_color" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -237,6 +245,52 @@
                 android:layout_height="wrap_content"
                 android:text="Играть с чуть менее глупым ботом" />
         </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView8"
+            style="@style/title_start_fragment_section"
+            android:text="Установите контроль времени"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+        <TextView
+            android:id="@+id/textView9"
+            style="@style/title_start_fragment_section"
+            android:layout_marginStart="8dp"
+            android:text="Минут на игру:"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextMinutes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextMinutes" />
+
+        <TextView
+            android:id="@+id/textView10"
+            style="@style/title_start_fragment_section"
+
+
+            android:text="+ сек/ход"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextSeconds"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/editTextMinutes" />
+
+        <EditText
+            android:id="@+id/editTextMinutes"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <EditText
+            android:id="@+id/editTextSeconds"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/editTextMinutes"
+            app:layout_constraintTop_toBottomOf="@+id/editTextMinutes" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
