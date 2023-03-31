@@ -80,7 +80,7 @@ class GameViewModel(
         }
         viewModelScope.launch {
             movesCount.asFlow().collect {
-                if (it == width * height) {
+                if (it == width * height && win.value == 0) {
                     val timeSpent2 =
                         if (it % 2 == 0) (minutes * 60 - timeLeftForPlayer2.value!! + add * movesCount.value!!).toInt()
                         else (minutes * 60 - timeLeftForPlayer2.value!! + add * (movesCount.value!! - 1)).toInt()
@@ -174,13 +174,15 @@ class GameViewModel(
             history.add("($row,$column)")
             field[row][column].value = turn
             tempField[row][column] = turn
-            _movesCount.value = _movesCount.value!! + 1
+
             this.print()
             val win = checkWin(column, row, turn)
             if (win) {
                 println("WIN $turn")
                 _win.value = turn
+                _movesCount.value = _movesCount.value!! + 1
             } else {
+                _movesCount.value = _movesCount.value!! + 1
                 switchTurn()
                 if (mode != GameMode.TWO_PLAYERS && turn == 2) {
                     var moves = getAllMoves()

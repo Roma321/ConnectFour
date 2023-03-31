@@ -262,7 +262,7 @@ class ConfigureGameFragment : Fragment() {
 
     private fun goToGame(it: View) {
         Navigation.findNavController(it).navigate(
-            ConfigureGameFragmentDirections.actionStartFragmentToGameFragment(
+            ConfigureGameFragmentDirections.actionConfigureGameFragmentToGameFragment(
                 width = viewModel.width.value!!,
                 height = viewModel.height.value!!,
                 player1Name = viewModel.playerNames.value!![0],

@@ -6,15 +6,6 @@
     app:startDestination="@id/startFragment">
 
     <fragment
-        android:id="@+id/startFragment"
-        android:name="com.example.inrow.configure.ConfigureGameFragment"
-        android:label="fragment_start"
-        tools:layout="@layout/fragment_configure" >
-        <action
-            android:id="@+id/action_startFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/gameFragment"
         android:name="com.example.inrow.game.GameFragment"
         android:label="fragment_game"
@@ -36,10 +27,6 @@
         <argument
             android:name="color2"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_gameFragment_to_startFragment"
-            app:destination="@id/startFragment"
-            app:popUpTo="@id/startFragment" />
         <argument
             android:name="mode"
             app:argType="com.example.inrow.GameMode" />
@@ -49,5 +36,31 @@
         <argument
             android:name="seconds"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_gameFragment_to_configureGameFragment"
+            app:destination="@id/configureGameFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.inrow.start.StartFragment"
+        android:label="StartFragment" >
+        <action
+            android:id="@+id/action_startFragment_to_configureGameFragment"
+            app:destination="@id/configureGameFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_statsFragment"
+            app:destination="@id/statsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/configureGameFragment"
+        android:name="com.example.inrow.configure.ConfigureGameFragment"
+        android:label="ConfigureGameFragment" >
+        <action
+            android:id="@+id/action_configureGameFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.example.inrow.stats.StatsFragment"
+        android:label="StatsFragment" />
 </navigation>
