@@ -137,5 +137,24 @@
             android:text="TextView"
             app:layout_constraintStart_toStartOf="@+id/textView6"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeaderOfGameHistory" />
+
+        <TextView
+            android:id="@+id/textViewHeaderOfGameHistory"
+            style="@style/title_start_fragment_section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="История игр"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/size_stat_tv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

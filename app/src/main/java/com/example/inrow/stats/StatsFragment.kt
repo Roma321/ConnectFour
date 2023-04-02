@@ -37,9 +37,15 @@ class StatsFragment : Fragment() {
 
 
         connectSpinner()
-
         connectStats()
+        val adapter = GameRecordAdapter(requireActivity())
+        binding.recycler.adapter = adapter
 
+        viewModel.filteredGamesLiveData.observe(viewLifecycleOwner){
+            adapter.data = it
+        }
+
+//        viewModel.filteredGamesLiveData.value
         return binding.root
     }
 

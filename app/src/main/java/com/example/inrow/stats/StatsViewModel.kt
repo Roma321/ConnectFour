@@ -20,6 +20,9 @@ class StatsViewModel(dao: GameDatabaseDao, application: Application) : ViewModel
     private var _filteredGames = listOf<GameRecord>()
     private val _allGames = dao.getAll()
     private lateinit var allGames: List<GameRecord>
+    var filteredGamesLiveData = MutableLiveData(listOf<GameRecord>())
+
+
 
     init {
         viewModelScope.launch {
@@ -61,21 +64,25 @@ class StatsViewModel(dao: GameDatabaseDao, application: Application) : ViewModel
 
     fun setAllGames() {
         _filteredGames = allGames
+        filteredGamesLiveData.value = _filteredGames
         calcStat()
     }
 
     fun setTwoPlayersGames() {
         _filteredGames = allGames.filter { it.mode == GameMode.TWO_PLAYERS }
+        filteredGamesLiveData.value = _filteredGames
         calcStat()
     }
 
     fun setRandomBotGames() {
         _filteredGames = allGames.filter { it.mode == GameMode.RANDOM_BOT }
+        filteredGamesLiveData.value = _filteredGames
         calcStat()
     }
 
     fun setSmartBotGames() {
         _filteredGames = allGames.filter { it.mode == GameMode.SMART_BOT }
+        filteredGamesLiveData.value = _filteredGames
         calcStat()
     }
 
