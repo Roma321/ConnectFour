@@ -24,7 +24,7 @@
                 android:id="@+id/tv_field_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Укажите размер поля. Выбрано: 5х5" />
+                android:text="@string/set_filed_size" />
 
             <LinearLayout
                 android:id="@+id/linear_layout_standard_size_buttons"
@@ -36,17 +36,17 @@
                 <Button
                     android:id="@+id/set_small_field_button"
                     style="@style/button_select_size_style"
-                    android:text="Маленький (7*6)" />
+                    android:text="@string/small_7_6" />
 
                 <Button
                     android:id="@+id/set_medium_field_button"
                     style="@style/button_select_size_style"
-                    android:text="Средний (8*8)" />
+                    android:text="@string/medium_8_8" />
 
                 <Button
                     android:id="@+id/set_big_field_button"
                     style="@style/button_select_size_style"
-                    android:text="Большой (10*10)" />
+                    android:text="@string/big_10_10" />
             </LinearLayout>
 
             <Button
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Настроить свой размер" />
+                android:text="@string/set_custom_size" />
 
             <LinearLayout
                 android:id="@+id/linear_layout_set_custom_size_elements"
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Ширина:" />
+                    android:text="@string/width" />
 
                 <Spinner
                     android:id="@+id/width_spinner"
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Высота:" />
+                    android:text="@string/height" />
 
                 <Spinner
                     android:id="@+id/height_spinner"
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Play"
+            android:text="@string/play"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -108,7 +108,7 @@
         <TextView
             android:id="@+id/textView3"
             style="@style/title_start_fragment_section"
-            android:text="Настройте имена игроков"
+            android:text="@string/set_plyers_names"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_of_size_selectors" />
@@ -117,7 +117,7 @@
             android:id="@+id/player_1_label"
             style="@style/player_label_settings"
             android:layout_marginTop="16dp"
-            android:text="Игрок 1:"
+            android:text="@string/player1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView3" />
 
@@ -125,7 +125,7 @@
             android:id="@+id/player_2_label"
             style="@style/player_label_settings"
             android:layout_marginTop="16dp"
-            android:text="Игрок 2:"
+            android:text="@string/player2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/player_1_label" />
 
@@ -165,7 +165,7 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Обновить"
+            android:text="@string/update"
             app:layout_constraintEnd_toEndOf="@+id/reload_image_view"
             app:layout_constraintStart_toStartOf="@+id/reload_image_view"
             app:layout_constraintTop_toBottomOf="@+id/reload_image_view" />
@@ -173,7 +173,7 @@
         <TextView
             android:id="@+id/textView7"
             style="@style/title_start_fragment_section"
-            android:text="Выберите цвет"
+            android:text="@string/choose_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_name_player_2" />
@@ -181,17 +181,16 @@
 
         <TextView
             android:id="@+id/player_1_label_2"
-            android:layout_marginTop="16dp"
             style="@style/player_label_settings"
-            android:text="Игрок 1:"
+            android:layout_marginTop="16dp"
+            android:text="@string/player1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView7" />
 
         <TextView
             android:id="@+id/player_2_label_2"
-
             style="@style/player_label_settings"
-            android:text="Игрок 2:"
+            android:text="@string/player2"
             app:layout_constraintStart_toEndOf="@+id/first_player_color"
             app:layout_constraintTop_toTopOf="@+id/player_1_label_2" />
 
@@ -230,26 +229,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Играть вдвоём на одном телефоне" />
+                android:text="@string/play_two_players" />
 
             <RadioButton
                 android:id="@+id/radioButtonRandomBot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:text="Играть с глупым ботом" />
+                android:text="@string/play_dumb_bot" />
 
             <RadioButton
                 android:id="@+id/radioButtonSmartBot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Играть с чуть менее глупым ботом" />
+                android:text="@string/play_smart_bot" />
         </RadioGroup>
 
         <TextView
             android:id="@+id/textView8"
             style="@style/title_start_fragment_section"
-            android:text="Установите контроль времени"
+            android:text="@string/set_control"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -258,7 +257,7 @@
             android:id="@+id/textView9"
             style="@style/title_start_fragment_section"
             android:layout_marginStart="8dp"
-            android:text="Минут на игру:"
+            android:text="@string/minutes"
             app:layout_constraintBottom_toBottomOf="@+id/editTextMinutes"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editTextMinutes" />
@@ -268,7 +267,7 @@
             style="@style/title_start_fragment_section"
 
 
-            android:text="+ сек/ход"
+            android:text="@string/seconds"
             app:layout_constraintBottom_toBottomOf="@+id/editTextSeconds"
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/editTextMinutes" />

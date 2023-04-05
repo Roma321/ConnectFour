@@ -29,49 +29,49 @@
         <TextView
             android:id="@+id/textView"
             style="@style/stats_fragment_label"
-            android:text="Всего игр: "
+            android:text="@string/games_total"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
         <TextView
             android:id="@+id/textView1"
             style="@style/stats_fragment_label"
-            android:text="Побед игрока 1: "
+            android:text="@string/win_1_total"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView2"
             style="@style/stats_fragment_label"
-            android:text="Побед игрока 2: "
+            android:text="@string/win_2_total"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
         <TextView
             android:id="@+id/textView3"
             style="@style/stats_fragment_label"
-            android:text="Ничьих: "
+            android:text="@string/draws"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <TextView
             android:id="@+id/textView4"
             style="@style/stats_fragment_label"
-            android:text="Средняя длительность партии: "
+            android:text="@string/me_length"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
             android:id="@+id/textView5"
             style="@style/stats_fragment_label"
-            android:text="Самая долгая партия: "
+            android:text="@string/longest_game"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
             android:id="@+id/textView6"
             style="@style/stats_fragment_label"
-            android:text="Статистика по размеру поля: "
+            android:text="@string/size_stat"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -152,7 +152,7 @@
             style="@style/title_start_fragment_section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="История игр"
+            android:text="@string/games_history"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/size_stat_tv" />

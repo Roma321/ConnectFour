@@ -2,6 +2,35 @@
     <string name="app_name">4 in row</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="set_filed_size">Укажите размер поля. Выбрано: 5х5</string>
+    <string name="small_7_6">Маленький (7*6)</string>
+    <string name="medium_8_8">Средний (8*8)</string>
+    <string name="big_10_10">Большой (10*10)</string>
+    <string name="set_custom_size">Настроить свой размер</string>
+    <string name="width">Ширина:</string>
+    <string name="height">Высота:</string>
+    <string name="play">Play</string>
+    <string name="set_plyers_names">Настройте имена игроков</string>
+    <string name="player1">Игрок 1:</string>
+    <string name="player2">Игрок 2:</string>
+    <string name="update">Обновить</string>
+    <string name="choose_color">Выберите цвет</string>
+    <string name="play_two_players">Играть вдвоём на одном телефоне</string>
+    <string name="play_dumb_bot">Играть с глупым ботом</string>
+    <string name="play_smart_bot">Играть с чуть менее глупым ботом</string>
+    <string name="set_control">Установите контроль времени</string>
+    <string name="minutes">Минут на игру:</string>
+    <string name="seconds">+ сек/ход</string>
+    <string name="show_stat">Показать статистику</string>
+    <string name="start_new_game">Начать новую игру</string>
+    <string name="games_total">Всего игр:</string>
+    <string name="win_1_total">Побед игрока 1:</string>
+    <string name="win_2_total">Побед игрока 2:</string>
+    <string name="draws">Ничьих:</string>
+    <string name="me_length">Средняя длительность партии:</string>
+    <string name="longest_game">Самая долгая партия:</string>
+    <string name="size_stat">Статистика по размеру поля:</string>
+    <string name="games_history">История игр</string>
 
     <string-array name="stats_select_mode_options">
         <item>Все игры</item>
