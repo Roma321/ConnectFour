@@ -5,9 +5,13 @@ import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.inrow.GameMode
+import com.example.inrow.bot.Bot
+import com.example.inrow.bot.RandomBot
+import com.example.inrow.bot.RulesBasedBot
 import com.example.inrow.database.GameDatabaseDao
 import com.example.inrow.database.GameRecord
 import kotlinx.coroutines.*
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -28,6 +32,23 @@ class GameViewModel(
         Array(height) { Array(width) { MutableLiveData(0) } }
 
     private val tempField = List(height) { MutableList(width) { 0 } }
+
+    //    private val bot = RandomBot(Array(height) { Array(width) { 0 } }, width, height)
+    private val bot: Bot? = when (mode) {
+        GameMode.SMART_BOT -> RulesBasedBot(
+            Array(height) { Array(width) { 0 } },
+            width,
+            height
+        )
+
+        GameMode.RANDOM_BOT -> RandomBot(
+            Array(height) { Array(width) { 0 } },
+            width,
+            height
+        )
+
+        else -> null
+    }
     private var timer1: CountDownTimer
     private var _timeLeftForPlayer1 = MutableLiveData(minutes * 60L)
     val timeLeftForPlayer1: LiveData<Long>
@@ -93,7 +114,6 @@ class GameViewModel(
                 }
             }
         }
-//        timer2.start()
     }
 
     private fun cancelTimers() {
@@ -169,38 +189,24 @@ class GameViewModel(
     fun onCellClicked(column: Int, row: Int) {
         if (moveIsIllegal(column, row)) return
         println("> $row $column")
-        if (row == 0 || field[row - 1][column].value != 0) {
-            switchTimers()
-            history.add("($row,$column)")
-            field[row][column].value = turn
-            tempField[row][column] = turn
 
-            this.print()
-            val win = checkWin(column, row, turn)
-            if (win) {
-                println("WIN $turn")
-                _win.value = turn
-                _movesCount.value = _movesCount.value!! + 1
-            } else {
-                _movesCount.value = _movesCount.value!! + 1
-                switchTurn()
-                if (mode != GameMode.TWO_PLAYERS && turn == 2) {
-                    var moves = getAllMoves()
-                    if (mode == GameMode.RANDOM_BOT) {
-                        val move = moves.shuffled()[0]
-                        onCellClicked(move.column, move.row)
-                    } else {
-                        if (movesCount.value == width * height) return
-                        if (checkOneMoveWin(moves)) return
-                        if (checkOneMoveDefence(moves)) return
-                        moves = filterLosingMoves(moves)
-                        moves.shuffle()
-                        if (checkCanMakeAttackingMove(moves)) return
-                        if (checkCanUse2InRow()) return
-                        val move = moves[0]
-                        onCellClicked(move.column, move.row)
-                    }
-                }
+        if (turn == 1 && bot != null) bot.setUserMove(column, row)
+        switchTimers()
+        history.add("($row,$column)")
+        field[row][column].value = turn
+        tempField[row][column] = turn
+
+        val win = checkWin(column, row, turn)
+        if (win) {
+            println("WIN $turn")
+            _win.value = turn
+            _movesCount.value = _movesCount.value!! + 1
+        } else {
+            _movesCount.value = _movesCount.value!! + 1
+            switchTurn()
+            if (mode != GameMode.TWO_PLAYERS && turn == 2) {
+                val move = bot!!.getMove()
+                onCellClicked(move.column, move.row)
             }
         }
     }
@@ -223,152 +229,10 @@ class GameViewModel(
         if (movesCount.value == width * height || win.value != 0) return true
         if (column >= width || row >= height) return true
         if (field[row][column].value != 0) return true
+        if (row != 0 && field[row - 1][column].value == 0) return true
         return false
     }
 
-    private fun checkCanMakeAttackingMove(moves: MutableList<Move>): Boolean {
-        var mostDangerousMove = moves[0]
-        var maxDanger = -1
-        for (move in moves) {
-            tempField[move.row][move.column] = turn
-            val lines = getAllLinesForCell(move.column, move.row)
-            print(lines)
-            val danger =
-                lines.count { list -> list.count { it == 0 } == 1 && list.count { it == turn } == 3 }
-            println("Опасность хода (${move.row}, ${move.column}) = $danger")
-            if (danger > maxDanger) {
-                maxDanger = danger
-                mostDangerousMove = move
-            }
-            tempField[move.row][move.column] = 0
-        }
-        if (maxDanger > 0) {
-            onCellClicked(mostDangerousMove.column, mostDangerousMove.row)
-            return true
-        }
-        return false
-    }
-
-    private fun filterLosingMoves(
-        moves: MutableList<Move>,
-    ): MutableList<Move> {
-        val nonLosingMoves = mutableListOf<Move>()
-        for (move in moves) {
-            if (move.row == height - 1) {
-                nonLosingMoves.add(move)
-                continue
-            }
-            val enemyMove = if (turn == 1) 2 else 1
-            tempField[move.row + 1][move.column] = enemyMove
-            if (checkWin(move.column, move.row + 1, enemyMove)) {
-                println("Найден проигрывающий ход: ${move.row} ${move.column}")
-            } else {
-                nonLosingMoves.add(move)
-            }
-            tempField[move.row + 1][move.column] = 0
-        }
-        if (nonLosingMoves.isEmpty()) return moves
-        return nonLosingMoves
-    }
-
-    private fun checkCanUse2InRow(): Boolean {
-        /*
-                        checks this situation:
-                        0 0 0 0 0 0
-                        0 0 x x 0 0
-
-                        where next move could be
-                        0 0 0 0 0 0
-                        0 x x x 0 0
-
-                        with win text move
-
-
-                         */
-        //                        val pairsOfPlayer = mutableListOf<Pair<Move,Move>>()
-        val pairsOfEnemyPlayer = mutableListOf<Pair<Move, Move>>()
-        for (i in 0 until height) {
-            for (j in 1 until width - 2) {
-                if ((tempField[i][j] == tempField[i][j + 1]) && tempField[i][j] != 0) { // есть 2 камня одного цвета в ряд в строке
-                    println("Есть 2 в ряд: $i $j")
-                    if (tempField[i][j - 1] == 0 && tempField[i][j + 2] == 0) { // и по краям от этих двух пусто
-                        if (i == 0 || tempField[i - 1][j - 1] != 0 && tempField[i - 1][j + 2] != 0) { //и оба этих пустых поля доступны для хода
-                            if (tempField[i][j] == turn) {
-                                println("Атакую")
-                                if (j > width / 2 - 1)//выбираем из двух ту, что ближе к центру
-                                    onCellClicked(row = i, column = j - 1)
-                                else {
-                                    onCellClicked(row = i, column = j + 2)
-                                }
-                                return true
-                            }
-                            pairsOfEnemyPlayer.add(
-                                Pair(
-                                    Move(i, j),
-                                    Move(i, j + 1)
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        if (pairsOfEnemyPlayer.isNotEmpty()) {
-            val suspiciousRow = pairsOfEnemyPlayer[0]
-            val j = suspiciousRow.first.column
-            val i = suspiciousRow.first.row
-            println("Подстраховываюсь")
-            if (j > width / 2 - 1)//выбираем из двух ту, что ближе к центру
-                onCellClicked(row = i, column = j - 1)
-            else {
-                onCellClicked(row = i, column = j + 2)
-            }
-            return true
-        }
-        return false
-    }
-
-    private fun checkOneMoveDefence(moves: MutableList<Move>): Boolean {
-        for (move in moves) {
-            val enemyMove = if (turn == 1) 2 else 1
-            tempField[move.row][move.column] = enemyMove
-            if (checkWin(move.column, move.row, enemyMove)) {
-                println("Защищаюсь!")
-                onCellClicked(move.column, move.row)
-                return true
-            }
-            tempField[move.row][move.column] = 0
-        }
-        return false
-    }
-
-    private fun checkOneMoveWin(moves: MutableList<Move>): Boolean {
-        for (move in moves) {
-            tempField[move.row][move.column] = turn
-            if (checkWin(move.column, move.row, turn)) {
-                println("Делаю победный ход!")
-                onCellClicked(move.column, move.row)
-                return true
-            }
-            tempField[move.row][move.column] = 0
-        }
-        return false
-    }
-
-    private fun getAllMoves(): MutableList<Move> {
-        val moves = mutableListOf<Move>()
-        for (rowNumber in height - 1 downTo 0) {
-            for (columnNumber in 0 until width) {
-                if (field[rowNumber][columnNumber].value == 0) {
-                    if (rowNumber == 0 || field[rowNumber - 1][columnNumber].value != 0)
-                        moves.add(Move(rowNumber, columnNumber))
-                }
-            }
-            println()
-        }
-        return moves
-    }
 
     private fun switchTurn() {
         turn = if (turn == 1) 2 else 1
