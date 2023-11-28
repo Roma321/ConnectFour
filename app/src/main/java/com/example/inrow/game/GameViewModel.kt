@@ -11,6 +11,8 @@ import com.example.inrow.bot.RandomBot
 import com.example.inrow.bot.RulesBasedBot
 import com.example.inrow.database.GameDatabaseDao
 import com.example.inrow.database.GameRecord
+import com.example.inrow.funcBot.checkWin
+import com.example.inrow.funcBot.convertLiveDataArray
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -34,7 +36,6 @@ class GameViewModel(
 
     private val tempField = List(height) { MutableList(width) { 0 } }
 
-    //    private val bot = RandomBot(Array(height) { Array(width) { 0 } }, width, height)
     private val bot: Bot? = when (mode) {
         GameMode.SMART_BOT -> RulesBasedBot(
             Array(height) { Array(width) { 0 } },
@@ -204,7 +205,7 @@ class GameViewModel(
         field[row][column].value = turn
         tempField[row][column] = turn
 
-        val win = checkWin(column, row, turn)
+        val win = checkWin(column, row, turn, convertLiveDataArray(field))
         if (win) {
             println("WIN $turn")
             _win.value = turn
@@ -249,153 +250,6 @@ class GameViewModel(
         turn = if (turn == 1) 2 else 1
     }
 
-    private fun checkWin(
-        column: Int,
-        row: Int,
-        player: Int
-    ): Boolean {
-//        print('3')
-        if (checkVerticalWin(column, row, player)) return true
-        if (checkHorizontalWin(column, row, player)) return true
-        if (checkDiagonalWin(column, row, player)) return true
-        return false
-    }
-
-    private fun checkDiagonalWin(column: Int, row: Int, player: Int): Boolean {
-//        println("d$turn")
-
-        val list = getIncreasingDiagonalsForCell(column, row)
-
-        if (list.any { it.all { a -> a == player } }) {
-            println("ПРЯМАЯ")
-            return true
-        }
-
-
-        /* That diagonal:
-         * x 0 0 0
-         * 0 x 0 0
-         * 0 0 x 0
-         * 0 0 0 x
-         */
-
-        val list2 = getDecreasingDiagonalsForCell(column, row)
-        if (list2.any { it.all { a -> a == player } }) {
-            println("ОБРАТНВЯ")
-            return true
-        }
-        return false
-    }
-
-    private fun getAllLinesForCell(column: Int, row: Int): List<List<Int>> {
-        return getDecreasingDiagonalsForCell(column, row)
-            .plus(getIncreasingDiagonalsForCell(column, row))
-            .plus(getHorizontalsForCell(column, row))
-            .plus(getVerticalForCell(row, column))
-
-    }
-
-    private fun getDecreasingDiagonalsForCell(column: Int, row: Int): MutableList<List<Int>> {
-        val decreasingDiagonals = mutableListOf<List<Int>>()
-        for (leftOffset in -3..0) {
-            if (column + leftOffset < 0
-                || row - leftOffset >= height
-                || column + leftOffset + 3 >= width
-                || row - leftOffset - 3 < 0
-            ) continue
-
-            val a = listOf(
-                tempField[row - leftOffset][column + leftOffset],
-                tempField[row - leftOffset - 1][column + leftOffset + 1],
-                tempField[row - leftOffset - 2][column + leftOffset + 2],
-                tempField[row - leftOffset - 3][column + leftOffset + 3]
-            )
-            decreasingDiagonals.add(a)
-        }
-
-        return decreasingDiagonals
-    }
-
-    private fun getIncreasingDiagonalsForCell(column: Int, row: Int): MutableList<List<Int>> {
-
-        /* That diagonal:
-        * 0 0 0 x
-        * 0 0 x 0
-        * 0 x 0 0
-        * x 0 0 0
-        * */
-        val increaseDiagonals = mutableListOf<List<Int>>()
-        for (leftOffset in -3..0) {
-            if (column + leftOffset < 0
-                || row + leftOffset < 0
-                || column + leftOffset + 3 >= width
-                || row + leftOffset + 3 >= height
-            ) continue
-
-            val a = listOf(
-                tempField[row + leftOffset][column + leftOffset],
-                tempField[row + leftOffset + 1][column + leftOffset + 1],
-                tempField[row + leftOffset + 2][column + leftOffset + 2],
-                tempField[row + leftOffset + 3][column + leftOffset + 3]
-            )
-            increaseDiagonals.add(a)
-        }
-
-        return increaseDiagonals
-    }
-
-    private fun checkHorizontalWin(column: Int, row: Int, player: Int): Boolean {
-//        println("h$turn")
-        val a = getHorizontalsForCell(column, row)
-        if (a.isNotEmpty() && a.any { it.all { a -> a == player } }) {
-            return true
-        }
-        return false
-    }
-
-    private fun getHorizontalsForCell(column: Int, row: Int): MutableList<List<Int>> {
-        val res = mutableListOf<List<Int>>()
-        for (startColumn in column - 3..column) {
-            if (startColumn < 0 || startColumn >= width - 3) continue
-            val a = listOf(
-                tempField[row][startColumn + 1],
-                tempField[row][startColumn + 2],
-                tempField[row][startColumn + 3],
-                tempField[row][startColumn]
-            )
-            res.add(a)
-        }
-        return res
-    }
-
-    private fun checkVerticalWin(
-        column: Int,
-        row: Int,
-        player: Int
-    ): Boolean {
-//        println("v$player")
-        val a = getVerticalForCell(row, column)
-        if (a.isNotEmpty() && a.any { vertical -> vertical.all { it == player } }) {
-            return true
-        }
-        return false
-    }
-
-    private fun getVerticalForCell(row: Int, column: Int): MutableList<List<Int>> {
-        val res = mutableListOf<List<Int>>()
-        for (downOffset in -3..0) {
-            if (row + downOffset >= 0 && row + downOffset + 3 < height) {
-                val a = listOf(
-                    tempField[row + downOffset][column],
-                    tempField[row + downOffset + 1][column],
-                    tempField[row + downOffset + 2][column],
-                    tempField[row + downOffset + 3][column]
-                )
-                res.add(a)
-            }
-        }
-        return res
-    }
 
     private fun getCurrentDateTime(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd:HH-mm-ss")
