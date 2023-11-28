@@ -4,12 +4,15 @@ import com.example.inrow.funcBot.checkWin
 import com.example.inrow.funcBot.possibleMoves
 import com.example.inrow.game.GameViewModel
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class NashEquilibriumBot(field: Array<Array<Int>>, width: Int, height: Int) :
     Bot(field, width, height) {
     fun innerGetMove(): GameViewModel.Move {
         val n = NashItem(field, null, 1, 2, 1)
         val a = n.bestMove()
+        println(a.second)
         return a.first?.last() ?: GameViewModel.Move(0, 0)
     }
 
@@ -71,25 +74,22 @@ fun score(
     previousMove: GameViewModel.Move?
 ): Float {
     if (previousMove == null) return 0f
+    val distToCenterMax = (field.size + field[0].size) / 2
 
     if (checkWin(previousMove.column, previousMove.row, player, field)) return 1f
     if (checkWin(previousMove.column, previousMove.row, opponent, field)) return -1f
     var rating = 0f
-    val coef = 0.5f / field.flatten().size
-    for ((i, row) in field.withIndex())
+    val coef = (1f / field.flatten().size).pow(2)
+    for ((i, row) in field.withIndex()) {
         for ((j, cell) in row.withIndex()) {
-            rating += ((row.size / 2 - abs(row.size / 2 - i) )/ row.size) * coef * when (cell) {
+            val thisDistToCenter = abs(i - field.size / 2) + abs(j - row.size / 2)
+            rating += (distToCenterMax - thisDistToCenter) * coef * when (cell) {
                 player -> 1
-//                opponent -> -1
                 else -> 0
             }
 
-            rating += ((row.size / 2 - abs(row.size / 2 - i)) / row.size) * coef / 2 * when (cell) {
-                player -> 1
-//                opponent -> -1
-                else -> 0
-            }
         }
+    }
     if (abs(rating) >= 1) {
         println(rating)
     }
@@ -108,9 +108,11 @@ fun setMoveInArray(
 }
 
 
-
 class Constants {
     companion object {
-        val MAX_NASH_DEPTH = 6
+        val MAX_NASH_DEPTH = 5
     }
 }
+
+
+//(-abs(4 - 4) / 4 + 1) * coef

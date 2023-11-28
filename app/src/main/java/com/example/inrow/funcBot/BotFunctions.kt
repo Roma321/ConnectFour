@@ -25,7 +25,6 @@ private fun checkDiagonalWin(
     val list = getIncreasingDiagonalsForCell(column, row, field)
 
     if (list.any { it.all { a -> a == player } }) {
-        println("ПРЯМАЯ")
         return true
     }
 
@@ -39,7 +38,6 @@ private fun checkDiagonalWin(
 
     val list2 = getDecreasingDiagonalsForCell(column, row, field)
     if (list2.any { it.all { a -> a == player } }) {
-        println("ОБРАТНВЯ")
         return true
     }
     return false
