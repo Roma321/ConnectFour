@@ -1,5 +1,6 @@
 package com.example.inrow.funcBot
 
+import androidx.lifecycle.MutableLiveData
 import com.example.inrow.game.GameViewModel
 
 fun checkWin(
@@ -179,4 +180,12 @@ fun possibleMoves(field: Array<Array<Int>>): MutableList<GameViewModel.Move> {
     }
     return moves
 
+}
+
+fun convertLiveDataArray(array: Array<Array<MutableLiveData<Int>>>): Array<Array<Int>> {
+    return array.map { innerArray ->
+        innerArray.map { liveData ->
+            liveData.value ?: 0 // use a default value if the MutableLiveData is null
+        }.toTypedArray()
+    }.toTypedArray()
 }
