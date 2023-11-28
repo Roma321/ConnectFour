@@ -278,10 +278,7 @@ class RulesBasedBot(field: Array<Array<Int>>, width: Int, height: Int) : Bot(fie
     ): Boolean {
 //        println("v$player")
         val a = getVerticalForCell(row, column)
-        if (a.isNotEmpty() && a.any { vertical -> vertical.all { it == player } }) {
-            return true
-        }
-        return false
+        return a.isNotEmpty() && a.any { vertical -> vertical.all { it == player } }
     }
 
     private fun getVerticalForCell(row: Int, column: Int): MutableList<List<Int>> {

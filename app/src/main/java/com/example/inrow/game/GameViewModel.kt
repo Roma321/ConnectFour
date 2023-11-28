@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.inrow.GameMode
 import com.example.inrow.bot.Bot
+import com.example.inrow.bot.NashEquilibriumBot
 import com.example.inrow.bot.RandomBot
 import com.example.inrow.bot.RulesBasedBot
 import com.example.inrow.database.GameDatabaseDao
@@ -41,7 +42,13 @@ class GameViewModel(
             height
         )
 
-        GameMode.RANDOM_BOT -> RandomBot(
+//        GameMode.RANDOM_BOT -> RandomBot(
+//            Array(height) { Array(width) { 0 } },
+//            width,
+//            height
+//        )
+
+        GameMode.RANDOM_BOT -> NashEquilibriumBot(
             Array(height) { Array(width) { 0 } },
             width,
             height
@@ -205,7 +212,10 @@ class GameViewModel(
             _movesCount.value = _movesCount.value!! + 1
             switchTurn()
             if (mode != GameMode.TWO_PLAYERS && turn == 2) {
+                println("asking for move")
                 val move = bot!!.getMove()
+                print("got move: ")
+                println(move)
                 onCellClicked(move.column, move.row)
             }
         }
