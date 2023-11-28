@@ -92,7 +92,6 @@ class RulesBasedBot(field: Array<Array<Int>>, width: Int, height: Int) : Bot(fie
         for (move in moves) {
             tempField[move.row][move.column] = turn
             val lines = getAllLinesForCell(move.column, move.row)
-            print(lines)
             val danger =
                 lines.count { list -> list.count { it == 0 } == 1 && list.count { it == turn } == 3 }
             println("Опасность хода (${move.row}, ${move.column}) = $danger")
