@@ -111,6 +111,6 @@ fun setMoveInArray(
 
 class Constants {
     companion object {
-        val MAX_NASH_DEPTH = 5
+        val MAX_NASH_DEPTH = 6
     }
 }

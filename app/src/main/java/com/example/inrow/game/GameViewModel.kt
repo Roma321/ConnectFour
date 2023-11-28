@@ -2,6 +2,8 @@ package com.example.inrow.game
 
 import android.app.Application
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.inrow.GameMode
@@ -214,11 +216,18 @@ class GameViewModel(
             _movesCount.value = _movesCount.value!! + 1
             switchTurn()
             if (mode != GameMode.TWO_PLAYERS && turn == 2) {
-                println("asking for move")
-                val move = bot!!.getMove()
-                print("got move: ")
-                println(move)
-                onCellClicked(move.column, move.row)
+                val mainHandler = Handler(Looper.getMainLooper())
+                GlobalScope.launch {
+                    val move = async { bot?.getMove() }
+
+                    // Wait for the move to be computed
+                    val result = move.await()!!
+                    mainHandler.post {
+                        // Call onCellClicked with the move
+                        onCellClicked(result.column, result.row)
+                    }
+                }
+
             }
         }
     }
