@@ -25,10 +25,10 @@ class GameViewModel(
     private val mode: GameMode,
     val minutes: Int,
     private val add: Int,
-    val dao: GameDatabaseDao,
+    private val dao: GameDatabaseDao,
     application: Application,
-    val player1Name: String,
-    val player2Name: String,
+    private val player1Name: String,
+    private val player2Name: String,
 ) : AndroidViewModel(application) {
 
     var field: Array<Array<MutableLiveData<Int>>> =
