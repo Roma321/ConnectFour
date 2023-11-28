@@ -67,6 +67,7 @@ class ConfigureGameFragment : Fragment() {
                 R.id.radioButtonTwoPlayers -> viewModel.setTwoPlayersMode()
                 R.id.radioButtonRandomBot -> viewModel.setRandomBotMode()
                 R.id.radioButtonSmartBot -> viewModel.setSmartBotMode()
+                R.id.radioButtonNashBot -> viewModel.setHashBotMode()
             }
         }
 
@@ -75,6 +76,7 @@ class ConfigureGameFragment : Fragment() {
                 GameMode.TWO_PLAYERS -> binding.radioGroup.check(R.id.radioButtonTwoPlayers)
                 GameMode.RANDOM_BOT -> binding.radioGroup.check(R.id.radioButtonRandomBot)
                 GameMode.SMART_BOT -> binding.radioGroup.check(R.id.radioButtonSmartBot)
+                GameMode.NASH_BOT -> binding.radioGroup.check(R.id.radioButtonNashBot)
             }
         }
     }
@@ -82,11 +84,9 @@ class ConfigureGameFragment : Fragment() {
     private fun connectColorPickers() {
         viewModel.color1.observe(viewLifecycleOwner) {
             binding.firstPlayerColor.setBackgroundColor(it)
-            Log.e("1", it.toString())
         }
         viewModel.color2.observe(viewLifecycleOwner) {
             binding.secondPlayerColor.setBackgroundColor(it)
-            Log.e("2", it.toString())
         }
 
 

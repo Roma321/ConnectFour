@@ -7,9 +7,8 @@ class NashEquilibriumBot(field: Array<Array<Int>>, width: Int, height: Int) :
     Bot(field, width, height) {
     fun innerGetMove(): GameViewModel.Move {
         val n = NashItem(field, null, 1, 2, 1)
-//        println(n)
         val a = n.bestMove()
-        return a.first!!.last()!!
+        return a.first?.last() ?: GameViewModel.Move(0, 0)
     }
 
     override fun getMove(): GameViewModel.Move {
@@ -74,18 +73,18 @@ fun score(
     if (checkWin(previousMove.column, previousMove.row, player, field)) return 1f
     if (checkWin(previousMove.column, previousMove.row, opponent, field)) return -1f
     var rating = 0f
-    val coef = 1f / field.flatten().size
+    val coef = 0.5f / field.flatten().size
     for ((i, row) in field.withIndex())
         for ((j, cell) in row.withIndex()) {
             rating += (row.size / 2 - abs(row.size / 2 - i) / row.size) * coef * when (cell) {
                 player -> 1
-                opponent -> -1
+//                opponent -> -1
                 else -> 0
             }
 
             rating += (row.size / 2 - abs(row.size / 2 - i) / row.size) * coef / 2 * when (cell) {
                 player -> 1
-                opponent -> -1
+//                opponent -> -1
                 else -> 0
             }
         }
@@ -286,6 +285,6 @@ private fun getVerticalForCell(
 
 class Constants {
     companion object {
-        val MAX_NASH_DEPTH = 3
+        val MAX_NASH_DEPTH = 5
     }
 }

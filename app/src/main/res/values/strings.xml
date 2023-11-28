@@ -18,6 +18,7 @@
     <string name="play_two_players">Играть вдвоём на одном телефоне</string>
     <string name="play_dumb_bot">Играть с глупым ботом</string>
     <string name="play_smart_bot">Играть с чуть менее глупым ботом</string>
+    <string name="play_nash_bot">Играть с ботом, построенным на равновесии Нэша</string>
     <string name="set_control">Установите контроль времени</string>
     <string name="minutes">Минут на игру:</string>
     <string name="seconds">+ сек/ход</string>

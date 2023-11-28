@@ -111,6 +111,8 @@ class ConfigureGameViewModel : ViewModel() {
     }
 
     fun setRandomBotMode() {
+        println("set random")
+
         _mode.value = GameMode.RANDOM_BOT
     }
 
@@ -122,6 +124,11 @@ class ConfigureGameViewModel : ViewModel() {
     fun setSeconds(seconds: Int) {
         if (seconds != _seconds.value)
             _seconds.value = maxOf(seconds, 0)
+    }
+
+    fun setHashBotMode() {
+        println("set nash")
+        _mode.value = GameMode.NASH_BOT
     }
 
 }

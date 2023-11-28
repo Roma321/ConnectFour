@@ -18,7 +18,7 @@
     <style name="title_start_fragment_section">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginTop">6dp</item>
     </style>
 
     <style name="stats_fragment_label">

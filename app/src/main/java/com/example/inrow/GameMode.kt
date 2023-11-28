@@ -1,5 +1,5 @@
 package com.example.inrow
 
 enum class GameMode {
-    TWO_PLAYERS, RANDOM_BOT, SMART_BOT
+    TWO_PLAYERS, RANDOM_BOT, SMART_BOT, NASH_BOT
 }

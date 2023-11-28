@@ -42,13 +42,13 @@ class GameViewModel(
             height
         )
 
-//        GameMode.RANDOM_BOT -> RandomBot(
-//            Array(height) { Array(width) { 0 } },
-//            width,
-//            height
-//        )
+        GameMode.RANDOM_BOT -> RandomBot(
+            Array(height) { Array(width) { 0 } },
+            width,
+            height
+        )
 
-        GameMode.RANDOM_BOT -> NashEquilibriumBot(
+        GameMode.NASH_BOT -> NashEquilibriumBot(
             Array(height) { Array(width) { 0 } },
             width,
             height
@@ -86,6 +86,7 @@ class GameViewModel(
 
     init {
         print()
+        print(mode)
         timer1 = getTimer1(minutes * 60L)
         timer1.start()
 

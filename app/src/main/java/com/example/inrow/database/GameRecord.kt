@@ -52,6 +52,7 @@ data class GameRecord(
             GameMode.TWO_PLAYERS -> "Человек"
             GameMode.RANDOM_BOT -> "Бот-рандомайзер"
             GameMode.SMART_BOT -> "Умный бот"
+            GameMode.NASH_BOT -> "Бот Нэша"
         }
     }
 }
