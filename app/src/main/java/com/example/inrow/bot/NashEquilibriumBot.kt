@@ -76,13 +76,13 @@ fun score(
     val coef = 0.5f / field.flatten().size
     for ((i, row) in field.withIndex())
         for ((j, cell) in row.withIndex()) {
-            rating += (row.size / 2 - abs(row.size / 2 - i) / row.size) * coef * when (cell) {
+            rating += ((row.size / 2 - abs(row.size / 2 - i) )/ row.size) * coef * when (cell) {
                 player -> 1
 //                opponent -> -1
                 else -> 0
             }
 
-            rating += (row.size / 2 - abs(row.size / 2 - i) / row.size) * coef / 2 * when (cell) {
+            rating += ((row.size / 2 - abs(row.size / 2 - i)) / row.size) * coef / 2 * when (cell) {
                 player -> 1
 //                opponent -> -1
                 else -> 0
