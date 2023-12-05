@@ -15,6 +15,9 @@ import com.example.inrow.database.GameDatabaseDao
 import com.example.inrow.database.GameRecord
 import com.example.inrow.funcBot.checkWin
 import com.example.inrow.funcBot.convertLiveDataArray
+import com.example.inrow.funcBot.getNashBotMove
+import com.example.inrow.funcBot.getRandomMove
+import com.example.inrow.funcBot.getRuleBasedMove
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -59,6 +62,14 @@ class GameViewModel(
 
         else -> null
     }
+
+    private val botFunc: ((Array<Array<Int>>) -> Move)? = when(mode){
+        GameMode.RANDOM_BOT -> ::getRandomMove
+        GameMode.TWO_PLAYERS -> null
+        GameMode.SMART_BOT -> ::getRuleBasedMove
+        GameMode.NASH_BOT -> ::getNashBotMove
+    }
+
     private var timer1: CountDownTimer
     private var _timeLeftForPlayer1 = MutableLiveData(minutes * 60L)
     val timeLeftForPlayer1: LiveData<Long>
@@ -218,12 +229,10 @@ class GameViewModel(
             if (mode != GameMode.TWO_PLAYERS && turn == 2) {
                 val mainHandler = Handler(Looper.getMainLooper())
                 GlobalScope.launch {
-                    val move = async { bot?.getMove() }
+                    val move = async { botFunc!!(convertLiveDataArray(field)) }
 
-                    // Wait for the move to be computed
-                    val result = move.await()!!
+                    val result = move.await()
                     mainHandler.post {
-                        // Call onCellClicked with the move
                         onCellClicked(result.column, result.row)
                     }
                 }
