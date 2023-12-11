@@ -56,25 +56,19 @@ private fun filterLosingMoves(
     moves: MutableList<GameViewModel.Move>,
     field: Array<Array<Int>>
 ): MutableList<GameViewModel.Move> {
-    val nonLosingMoves = mutableListOf<GameViewModel.Move>()
     val height = field.size
     val opponentSide = 1
     val botSide = 2
-    for (move in moves) {
-        if (move.row == height - 1) {
-            nonLosingMoves.add(move)
-            continue
+    val nonLosingMoves = moves.filter {
+        if (it.row == height - 1) {
+            return@filter true
         }
-        val newField = setMoveInArray(field, move, botSide)
-        newField[move.row + 1][move.column] = opponentSide
-        if (checkWin(move.column, move.row + 1, opponentSide, newField)) {
-            println("Найден проигрывающий ход: ${move.row} ${move.column}")
-        } else {
-            nonLosingMoves.add(move)
-        }
+        val newField = setMoveInArray(field, it, botSide)
+        newField[it.row + 1][it.column] = opponentSide
+        return@filter !checkWin(it.column, it.row + 1, opponentSide, newField)
     }
     if (nonLosingMoves.isEmpty()) return moves
-    return nonLosingMoves
+    return nonLosingMoves.toMutableList()
 }
 
 private fun checkCanMakeAttackingMove(
