@@ -5,6 +5,7 @@ import com.example.inrow.funcBot.possibleMoves
 import com.example.inrow.game.GameViewModel
 import kotlin.math.abs
 import kotlin.math.pow
+import kotlin.math.sign
 import kotlin.math.sqrt
 
 class NashEquilibriumBot(field: Array<Array<Int>>, width: Int, height: Int) :
@@ -92,6 +93,7 @@ fun score(
     }
     if (abs(rating) >= 1) {
         println(rating)
+        rating = 0.99999f* sign(rating)
     }
     return rating
 }
